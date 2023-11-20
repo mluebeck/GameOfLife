@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-struct  Position {
-    var x : Int
-    var y : Int
-}
-
-
-
-
 
 struct ContentView: View {
     @StateObject var cellModel = CellModel(rows: 20, cols: 30)
@@ -24,8 +16,6 @@ struct ContentView: View {
             .padding()
     }
 }
-
-
 
 #Preview {
     ContentView()

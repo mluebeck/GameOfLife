@@ -33,8 +33,16 @@ struct GameOfLifeView: View {
                     Button("Reset") {
                         self.cellModel.resetGrid()
                     }
-                    Button("Start") {
-                        self.cellModel.resetGrid()
+                    if self.cellModel.isRunning==true {
+                        Button("Stop") {
+                            self.cellModel.isRunning=false
+                            //self.cellModel.step()
+                        }
+                    } else {
+                        Button("Start") {
+                            self.cellModel.isRunning=true
+                            self.cellModel.step(next: true)
+                        }
                     }
                     Button("Step") {
                         self.cellModel.step()

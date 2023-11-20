@@ -12,6 +12,7 @@ import SwiftUI
 class CellModel: ObservableObject {
     var rows: Int
     var cols: Int
+    var isRunning : Bool = false
     @Published var grid: [[Bool]]
     
     init(rows: Int, cols: Int) {
@@ -28,12 +29,25 @@ class CellModel: ObservableObject {
         grid = Array(repeating: Array(repeating: false, count: cols), count: rows)
     }
     
-    func element(at position:Position) -> Bool? {
-        if position.x < 0 || position.y < 0 || position.x>=Int(self.rows) || position.y>=Int(self.cols)
-        {
-            return nil
+    func element(at position:Position) -> Bool {
+        var x : Int = position.x
+        var y : Int = position.y
+
+        if position.x < 0 {
+            x = self.rows+position.x
+        } else
+        if position.x>=self.rows {
+            x = self.rows-position.x
         }
-        return self.grid[position.x][position.y]
+        
+        if position.y < 0 {
+            y = self.cols+position.y
+        } else
+        if position.y>=self.cols {
+            y = self.cols-position.y
+        }
+        
+        return self.grid[x][y]
     }
     
     func numberOfNeighbours(at position:Position) -> Int {
@@ -42,36 +56,41 @@ class CellModel: ObservableObject {
                                          (x:-1,y:-1),(x:-1,y:1),(x:-1,y:0),
                                          (x:1,y:-1),(x:1,y:1),(x:1,y:0)]
         for index in indices {
-            if let v = self.element(at: Position(x: position.x+index.x, y: position.y+index.y)), v == true {
+            let v = self.element(at: Position(x: position.x+index.x, y: position.y+index.y))
+            if v == true {
                 neighbors += 1
             }
         }
         return neighbors
     }
     
-    func step() {
+    func step(next:Bool = false) {
         var localGrid = Array(repeating: Array(repeating: false, count: self.cols), count: self.rows)
         for i in 0..<Int(self.rows) {
             for j in 0..<Int(self.cols) {
                 let position = Position(x: i, y: j)
-                if let value = self.element(at: position) {
-                    let numberOfN = self.numberOfNeighbours(at: Position(x: i, y: j))
-                    if value == true {
-                        switch numberOfN {
-                        case 2,3 :
-                            localGrid[i][j] = true
-                        default:
-                            localGrid[i][j] = false
-                        }
+                let value = self.element(at: position)
+                let numberOfN = self.numberOfNeighbours(at: Position(x: i, y: j))
+                if value == true {
+                    switch numberOfN {
+                    case 2,3 :
+                        localGrid[i][j] = true
+                    default:
+                        localGrid[i][j] = false
                     }
-                    else {
-                        if numberOfN==3 {
-                            localGrid[i][j] = true
-                        }
+                }
+                else {
+                    if numberOfN==3 {
+                        localGrid[i][j] = true
                     }
                 }
             }
         }
         self.grid = localGrid
+        if next==true && self.isRunning==true {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                self.step(next: true)
+            })
+        }
     }
 }
