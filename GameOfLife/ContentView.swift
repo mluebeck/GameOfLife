@@ -14,6 +14,8 @@ struct  Position {
 
 // Zelluläre Automaten-Logik
 class CellModel: ObservableObject {
+    let cellSizeX: CGFloat = 20.0
+    let cellSizeY: CGFloat = 20.0
     @Published var grid: [[Bool]]
     
     init(rows: Int, cols: Int) {
@@ -25,11 +27,11 @@ class CellModel: ObservableObject {
     }
     
     func resetGrid() {
-        grid = Array(repeating: Array(repeating: false, count: grid[0].count), count: grid.count)
+        grid = Array(repeating: Array(repeating: false, count: Int(self.cellSizeX)), count: Int(self.cellSizeY))
     }
     
     func element(at position:Position) -> Bool? {
-        if position.x < 0 || position.y < 0 || position.x>=self.grid.count || position.y>=self.grid.count
+        if position.x < 0 || position.y < 0 || position.x>=Int(self.cellSizeX) || position.y>=Int(self.cellSizeY)
         {
             return nil
         }
@@ -50,9 +52,9 @@ class CellModel: ObservableObject {
     }
     
     func step() {
-        var localGrid = Array(repeating: Array(repeating: false, count: grid[0].count), count: grid.count)
-        for i in 0..<self.grid[0].count {
-            for j in 0..<self.grid[0].count {
+        var localGrid = Array(repeating: Array(repeating: false, count: Int(self.cellSizeX)), count: Int(self.cellSizeY))
+        for i in 0..<Int(self.cellSizeX) {
+            for j in 0..<Int(self.cellSizeY) {
                 let position = Position(x: i, y: j)
                 if let value = self.element(at: position) {
                     let numberOfN = self.numberOfNeighbours(at: Position(x: i, y: j))
@@ -69,7 +71,6 @@ class CellModel: ObservableObject {
                             localGrid[i][j] = true
                         }
                     }
-                    
                 }
             }
         }
@@ -80,7 +81,6 @@ class CellModel: ObservableObject {
 // SwiftUI-Ansicht für das Spielfeld
 struct GameOfLifeView: View {
     @ObservedObject var cellModel: CellModel
-    let cellSize: CGFloat = 20.0
     
     var body: some View {
         VStack(spacing:0.0) {
@@ -88,7 +88,7 @@ struct GameOfLifeView: View {
                 HStack(spacing:0.0) {
                     ForEach(0..<cellModel.grid[row].count, id: \.self) { col in
                         CellView(isAlive: self.$cellModel.grid[row][col])
-                            .frame(width: self.cellSize, height: self.cellSize)
+                            .frame(width: cellModel.cellSizeX, height: cellModel.cellSizeY)
                             .onTapGesture {
                                 self.cellModel.toggleCell(row: row, col: col)
                             }
