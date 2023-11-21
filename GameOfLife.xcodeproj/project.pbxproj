@@ -18,6 +18,7 @@
 		8C1F70452B0B45AD00A1030F /* GameOfLifeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F70442B0B45AD00A1030F /* GameOfLifeView.swift */; };
 		8C1F70472B0B45F900A1030F /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F70462B0B45F900A1030F /* CellModel.swift */; };
 		8C1F704B2B0B9D5900A1030F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F704A2B0B9D5900A1030F /* Position.swift */; };
+		8C3F35252B0D5EB500660D32 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3F35242B0D5EB500660D32 /* Playground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		8C1F70442B0B45AD00A1030F /* GameOfLifeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOfLifeView.swift; sourceTree = "<group>"; };
 		8C1F70462B0B45F900A1030F /* CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
 		8C1F704A2B0B9D5900A1030F /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		8C3F35242B0D5EB500660D32 /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 			children = (
 				8C1F70462B0B45F900A1030F /* CellModel.swift */,
 				8C1F704A2B0B9D5900A1030F /* Position.swift */,
+				8C3F35242B0D5EB500660D32 /* Playground.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				8C1F70452B0B45AD00A1030F /* GameOfLifeView.swift in Sources */,
 				8C1F704B2B0B9D5900A1030F /* Position.swift in Sources */,
 				8C1F70182B0AD9EC00A1030F /* GameOfLifeApp.swift in Sources */,
+				8C3F35252B0D5EB500660D32 /* Playground.swift in Sources */,
 				8C1F70472B0B45F900A1030F /* CellModel.swift in Sources */,
 				8C1F70432B0B458800A1030F /* CellView.swift in Sources */,
 			);
