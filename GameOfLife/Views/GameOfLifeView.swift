@@ -30,16 +30,16 @@ struct GameOfLifeView: View {
            
             VStack {
                 Text("Generation: \(cellModel.counter)").padding(.top)
-                HStack(spacing: 10.0, content: {
-                    
+                HStack(spacing: 10.0, content: {                    
                     Button("Reset") {
                         self.cellModel.resetGrid()
+                        self.cellModel.isRunning=false
+                        self.cellModel.counter=0
                     }
                     if self.cellModel.isRunning==true {
                         Button("Stop") {
                             self.cellModel.isRunning=false
                             self.cellModel.counter=0
-                            //self.cellModel.step()
                         }
                     } else {
                         Button("Start") {
