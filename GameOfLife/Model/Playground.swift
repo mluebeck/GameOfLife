@@ -74,20 +74,23 @@ public class Playground    {
         var newarray = Array(repeating: Array(repeating: false, count: self.columnSize), count: self.rowSize)
         for x in 0..<self.rowSize {
             for y in 0..<self.columnSize {
-                if self.element(at:Position(x: x, y: y)) == false && self.numberOfNeighbours(x: x, y: y) == 3 {
-                    newarray[x % self.rowSize][y % self.columnSize] = true
-                } else
-                if self.element(at:Position(x: x, y: y)) == true && self.numberOfNeighbours(x: x, y: y) < 2 {
-                    newarray[x % self.rowSize][y % self.columnSize] = false
-                }
-                else if self.element(at:Position(x: x, y: y)) == true && (self.numberOfNeighbours(x: x, y: y) == 2 || self.numberOfNeighbours(x: x, y: y) == 3) {
-                    newarray[x % self.rowSize][y % self.columnSize] = true
-                }
-                else if self.element(at:Position(x: x, y: y)) == true && self.numberOfNeighbours(x: x, y: y) > 3 {
-                    newarray[x % self.rowSize][y % self.columnSize] = false
-                }
-                else {
-                    newarray[x % self.rowSize][y % self.columnSize] = self.element(at:Position(x: x, y: y))
+                let neighbours = self.numberOfNeighbours(x: x, y: y)
+                switch self.element(at:Position(x: x, y: y))
+                {
+                case false:
+                    switch neighbours {
+                    case 3:
+                        newarray[x % self.rowSize][y % self.columnSize] = true
+                    default:
+                        newarray[x % self.rowSize][y % self.columnSize] = self.element(at:Position(x: x, y: y))
+                    }
+                default:
+                    switch neighbours {
+                    case 2,3:
+                        newarray[x % self.rowSize][y % self.columnSize] = true
+                    default:
+                        newarray[x % self.rowSize][y % self.columnSize] = false
+                    }
                 }
             }
         }
