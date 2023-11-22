@@ -9,7 +9,8 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @StateObject var cellModel = CellModel(rows: 20, cols: 30)
+    
+    @StateObject var cellModel = CellModel(rows: 30, cols: 30)
     
     var body: some View {
         GameOfLifeView(cellModel: cellModel)
