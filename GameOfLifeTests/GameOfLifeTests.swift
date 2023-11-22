@@ -13,70 +13,73 @@ final class GameOfLifeTests: XCTestCase {
 
     func test_PlaygroundSize()
     {
-        let playground = Playground(columnSize: 10, rowSize: 20)
-        XCTAssertEqual(playground.count,200)
+        let columnCount = 20
+        let rowCount = 10
+        let playground = Playground(columnSize: columnCount, rowSize: rowCount)
+        XCTAssertEqual(playground.count,columnCount*rowCount)
     }
     
     func test_fetchElement() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         XCTAssertEqual(playground.element(at:Position(x:5,y:5)),false)
     }
     
     func test_fetchElementOutOfArea() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         XCTAssertEqual(playground.element(at:Position(x:15,y:25)),false)
     }
     
     func test_fetchOneTrueElement() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         playground.array[5][6] = true
         XCTAssertEqual(playground.element(at:Position(x:5,y:6)),true)
     }
     
     func test_fetchOneOutOfAreaTrueElement() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         playground.array[15 % 20][26 % 10] = true
         XCTAssertEqual(playground.element(at:Position(x:15,y:26)),true)
         XCTAssertEqual(playground.element(at:Position(x:15 % 20,y:26 % 10)),true)
     }
     
     func test_setTrueElementOutOfArea() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         playground.set(position:Position(x:15,y:26),value:true)
         XCTAssertEqual(playground.element(at:Position(x:15,y:26)),true)
     }
     
     func test_setTrueElementOutOfAreaNegative() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
+        let playground = self.putDeadCellSomewhere().1
         playground.set(position:Position(x:-1,y:-1),value:true)
         XCTAssertEqual(playground.element(at:Position(x:-1,y:-1)),true)
         XCTAssertEqual(playground.element(at:Position(x:19,y:9)),true)
     }
     
     func test_setTrueElement() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
-        playground.set(position:Position(x:5,y:6),value:true)
-        XCTAssertEqual(playground.element(at:Position(x:5,y:6)),true)
+        let sut = self.putLivingCellSomewhere()
+        let origin = sut.0
+        let playground = sut.1
+        playground.set(position:Position(x:origin.x,y:origin.y),value:true)
+        XCTAssertEqual(playground.element(at:Position(x:origin.x,y:origin.y)),true)
     }
     
     func test_setToggleElement() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
-        playground.toggle(at: Position(x:5,y:6))
-        XCTAssertEqual(playground.element(at:Position(x:5,y:6)),true)
-        playground.toggle(at: Position(x:5,y:6))
-        XCTAssertEqual(playground.element(at:Position(x:5,y:6)),false)
-        playground.toggle(at: Position(x:5,y:6))
-        XCTAssertEqual(playground.element(at:Position(x:5,y:6)),true)
+        let sut = self.putLivingCellSomewhere()
+        let origin = sut.0
+        let playground = sut.1
+        XCTAssertEqual(playground.element(at:Position(x:origin.x,y:origin.y)),true)
+        playground.toggle(at: Position(x:origin.x,y:origin.y))
+        XCTAssertEqual(playground.element(at:Position(x:origin.x,y:origin.y)),false)
+        playground.toggle(at: Position(x:origin.x,y:origin.y))
+        XCTAssertEqual(playground.element(at:Position(x:origin.x,y:origin.y)),true)
     }
     
     func test_hasOneNeighbour() {
-        let playground = Playground(columnSize: 10, rowSize: 20)
-        let origin = (x:5,y:6)
-        playground.set(position:Position(x:origin.x,y:origin.y),value:true)
-
+        let sut = self.putLivingCellSomewhere()
+        let origin = sut.0
+        let playground = sut.1
+        
         playground.set(position:Position(x:origin.x,y:origin.y-1),value:true)
-        //playground.set(x:5,y:7,value:true)
-
         XCTAssertEqual(playground.numberOfNeighbours(x:origin.x,y:origin.y),1)
     }
     
