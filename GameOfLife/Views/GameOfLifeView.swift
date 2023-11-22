@@ -16,9 +16,9 @@ struct GameOfLifeView: View {
     var body: some View {
          
         VStack(spacing:0.0) {
-            ForEach(0..<cellModel.playground.rows, id: \.self) { row in
+            ForEach(0..<cellModel.playground.rowSize, id: \.self) { row in
                 HStack(spacing:0.0) {
-                    ForEach(0..<cellModel.playground.columns, id: \.self) { col in
+                    ForEach(0..<cellModel.playground.columnSize, id: \.self) { col in
                         CellView(isAlive: self.$cellModel.playground.array[row][col])
                             .frame(width: size.width, height: size.height)
                             .onTapGesture {

@@ -15,7 +15,7 @@ class CellModel: ObservableObject {
     var isRunning : Bool = false
 
     init(rows: Int, cols: Int) {
-        playground = Playground(columns: cols, rows: rows)
+        playground = Playground(columnSize: cols, rowSize: rows)
         playground.update = {
             [weak self ] in
             self?.objectWillChange.send()

@@ -12,22 +12,22 @@ struct Position {
     var x : Int
     var y : Int
     
-    func normalize(columns:Int,rows:Int)->Position {
+    func normalize(columnSize:Int,rowSize:Int)->Position {
         var x1 : Int = x
         var y1 : Int = y
 
         if self.x < 0 {
-            x1 = rows+(x % rows)
+            x1 = rowSize+(x % rowSize)
         } else
-        if x>=rows {
-            x1 = x % rows
+        if x>=rowSize {
+            x1 = x % rowSize
         }
             
         if y < 0 {
-            y1 = columns+(y % columns)
+            y1 = columnSize+(y % columnSize)
         } else
-        if y>=columns {
-            y1 = y % columns
+        if y>=columnSize {
+            y1 = y % columnSize
         }
         return Position(x: x1, y: y1)
     }

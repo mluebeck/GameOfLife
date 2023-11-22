@@ -7,19 +7,20 @@
 
 import Foundation
 
+ 
 public class Playground    {
     var array : [[Bool]] {
         didSet {
             self.update()
         }
     }
-    var columns : Int
-    var rows : Int
+    var columnSize : Int
+    var rowSize : Int
     var update = {}
-    init(columns:Int,rows:Int) {
-        self.columns = columns
-        self.rows = rows
-        array = Array(repeating: Array(repeating: false, count: columns), count:rows )
+    init(columnSize:Int,rowSize:Int) {
+        self.columnSize = columnSize
+        self.rowSize = rowSize
+        array = Array(repeating: Array(repeating: false, count: columnSize), count:rowSize )
     }
     
     var count : Int {
@@ -32,17 +33,17 @@ public class Playground    {
     }
     
     func reset() {
-        array = Array(repeating: Array(repeating: false, count: self.columns), count:self.rows )
+        array = Array(repeating: Array(repeating: false, count: self.columnSize), count:self.rowSize )
     }
     
     func element(at position:Position) -> Bool {
-        let p = position.normalize(columns: columns, rows: rows)
+        let p = position.normalize(columnSize: columnSize, rowSize: rowSize)
         return self.array[p.x][p.y]
     }
     
     
     func set(position:Position,value:Bool) {
-        let p =  position.normalize(columns: columns, rows: rows)
+        let p =  position.normalize(columnSize: columnSize, rowSize: rowSize)
         let x = p.x
         let y = p.y
         if (value == true && self.array[x][y] == false) || (value == false && self.array[x][y] == true){
@@ -51,7 +52,7 @@ public class Playground    {
     }
     
     func toggle(at position:Position) {
-        let p =  position.normalize(columns: columns, rows: rows)
+        let p =  position.normalize(columnSize: columnSize, rowSize: rowSize)
         self.array[p.x][p.y].toggle()
     }
     
@@ -62,7 +63,7 @@ public class Playground    {
                        (x:-1,y:-1),(x:0,y:-1),(x:1,y:-1)]
         indices.forEach{
             index in
-            if self.element(at: Position(x: x+index.x % self.rows, y: y+index.y % self.columns)) {
+            if self.element(at: Position(x: x+index.x % self.rowSize, y: y+index.y % self.columnSize)) {
                 count += 1
             }
         }
@@ -70,23 +71,23 @@ public class Playground    {
     }
     
     func nextGeneration() {
-        var newarray = Array(repeating: Array(repeating: false, count: self.columns), count: self.rows)
-        for x in 0..<self.rows {
-            for y in 0..<self.columns {
+        var newarray = Array(repeating: Array(repeating: false, count: self.columnSize), count: self.rowSize)
+        for x in 0..<self.rowSize {
+            for y in 0..<self.columnSize {
                 if self.element(at:Position(x: x, y: y)) == false && self.numberOfNeighbours(x: x, y: y) == 3 {
-                    newarray[x % self.rows][y % self.columns] = true
+                    newarray[x % self.rowSize][y % self.columnSize] = true
                 } else
                 if self.element(at:Position(x: x, y: y)) == true && self.numberOfNeighbours(x: x, y: y) < 2 {
-                    newarray[x % self.rows][y % self.columns] = false
+                    newarray[x % self.rowSize][y % self.columnSize] = false
                 }
                 else if self.element(at:Position(x: x, y: y)) == true && (self.numberOfNeighbours(x: x, y: y) == 2 || self.numberOfNeighbours(x: x, y: y) == 3) {
-                    newarray[x % self.rows][y % self.columns] = true
+                    newarray[x % self.rowSize][y % self.columnSize] = true
                 }
                 else if self.element(at:Position(x: x, y: y)) == true && self.numberOfNeighbours(x: x, y: y) > 3 {
-                    newarray[x % self.rows][y % self.columns] = false
+                    newarray[x % self.rowSize][y % self.columnSize] = false
                 }
                 else {
-                    newarray[x % self.rows][y % self.columns] = self.element(at:Position(x: x, y: y))
+                    newarray[x % self.rowSize][y % self.columnSize] = self.element(at:Position(x: x, y: y))
                 }
             }
         }
